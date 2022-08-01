@@ -1,0 +1,58 @@
+/// Training Usage
+
+--> Usage prescribed by original NSLT(Camgoz, CVPR2018 paper)
+python -m nslt \
+        --src=sign \
+        --tgt=de \
+        --train_prefix=modeldata/phoenix2014T.train \
+        --dev_prefix=modeldata/phoenix2014T.dev \
+        --test_prefix=modeldata/phoenix2014T.test \
+        --out_dir=./nslt_model \
+        --vocab_prefix=modeldata/phoenix2014T.vocab \
+        --source_reverse=True \
+        --num_units=1000 \
+        --num_layers=4 \
+        --num_train_steps=150000 \
+        --steps_per_stats=100 \
+        --residual=True \
+        --attention=luong \
+        --base_gpu=0 \
+        --metrics=bleu \
+        --unit_type=gru
+
+--> Experiments and Tests performed using following low resource usage command
+python -m nslt \
+        --src=sign \
+        --tgt=de \
+        --train_prefix=modeldata/phoenix2014T.train \
+        --dev_prefix=modeldata/phoenix2014T.dev \
+        --test_prefix=modeldata/phoenix2014T.test \
+        --out_dir=./nslt_model \
+        --vocab_prefix=modeldata/phoenix2014T.vocab \
+        --source_reverse=True \
+        --num_units=32 \
+        --num_layers=2 \
+        --learning_rate=0.001 \
+        --src_max_len=100 \
+        --tgt_max_len=50 \
+        --src_max_len_infer=150 \
+        --num_train_steps=150 \
+        --steps_per_stats=2 \
+        --residual=True \
+        --attention=luong \
+        --base_gpu=0 \
+        --metrics=bleu \
+        --unit_type=gru
+
+Inference Usage
+
+python -m nslt \
+        --out_dir=./nslt_model \
+        --inference_input_file=modeldata/phoenix2014T.test.sign \
+        --inference_output_file=./phoenix2014T.test.inf_out.de \
+        --inference_ref_file=modeldata/phoenix2014T.test.de \
+        --base_gpu=0
+
+View Logging in Tensorboard
+
+tensorboard --port 22222 --logdir ./nslt_model
